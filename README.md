@@ -22,4 +22,3 @@ A VPC endpoint connection across the regions would be needed for the lambda to a
 To Deploy the solution , get started by deploying the 
 
 aws cloudformation deploy --template-file /path_to_template/template.json --stack-name my-new-stack --parameter-overrides Key1=Value1 Key2=Value2 --tags Key1=Value1 Key2=Value2
-
