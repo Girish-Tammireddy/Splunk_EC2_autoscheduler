@@ -1,7 +1,7 @@
 # Splunk_EC2_autoschedule
 EC2 _autoscheduling 
 
-Ec2 automated turn-on / off functionality for DR purposes:
+##Ec2 automated turn-on / off functionality for DR purposes:
 
 Solution:
 We are using the following AWS resources to accomplish the above functionality
