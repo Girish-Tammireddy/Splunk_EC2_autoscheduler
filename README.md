@@ -3,7 +3,7 @@ EC2 _autoscheduling
 
 #Ec2 automated turn-on / off functionality for DR purposes:
 
-Solution:
+# Solution:
 We are using the following AWS resources to accomplish the above functionality
 
 a.IAM role for Lambda execution:
