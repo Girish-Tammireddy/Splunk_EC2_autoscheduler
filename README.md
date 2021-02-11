@@ -10,7 +10,10 @@ a.IAM role for Lambda execution:
 This IAM role will be assumed by the Lambda function to execute the necessary start / stop Ec2 functionality and to write the logs to cloud watch logs.
 
 b.Evenbridge:
-We will be using the AWS event bridge rules to create a pattern which would match the event pattern of an EC2 instance state changing to stopping , shutting down or starting , based on these events the rule will be invoking the corresponding Lambda functions .
+We will be using the AWS event bridge rules to create a pattern which would match the event pattern of an EC2 instance state changing to stopping , shutting down or starting , based on these events the rule will be invoking the corresponding SNS Topic
+
+c. SNS Topic:
+The SNS Topic gets the message payload from the Eventbridge and sends an inokation to its respective lambda subscription.
 
 c.Lambda:
 There will be 2 lambda functions used in this framework one for starting  the ec2 instance - this gets triggered when the primary EC2 instance goes into stopping , shutting down or terminating state from running state .
