@@ -15,7 +15,7 @@ We will be using the AWS event bridge rules to create a pattern which would matc
 c. SNS Topic:
 The SNS Topic gets the message payload from the Eventbridge and sends an inokation to its respective lambda subscription.
 
-c.Lambda:
+d.Lambda:
 There will be 2 lambda functions used in this framework one for starting  the ec2 instance - this gets triggered when the primary EC2 instance goes into stopping , shutting down or terminating state from running state .
 
 A second lambda function will be used to stop the secondary Ec2 in DR when the primary Ec2 instance changes it state to running .
