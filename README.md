@@ -26,3 +26,6 @@ Next insert the instance id of the secondary ec2 in the Lambda function in the p
 
 In the third step deploy the sns-eventrule-ec2turnoff.yaml sns-eventrule-ec2turnofN.yaml CFN template.
 
+![](Splun_DR.png)
+
+
