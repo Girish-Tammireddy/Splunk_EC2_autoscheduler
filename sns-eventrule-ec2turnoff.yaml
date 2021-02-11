@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+
+  EC2TurnOFFTopic:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      DisplayName: !Sub 'EC2TurnOFFTopic'
+      
+  LambdaONSubscription:
+    Type: 'AWS::SNS::Subscription'
+    Properties:
+      TopicArn: !Ref EC2TurnOFFTopic
+      Protocol: lambda
+      Region: us-east-1
+      Endpoint: arn:aws:lambda:us-west-1:809184911390:function:Ec2TurnOFF ## ARN of the EC2 TurnOFF Lambda function ##
+      
+      
+  EventRule: 
+    Type: 'AWS::Events::Rule'
+    Properties: 
+      Description: "EventRuleforLambdaTurnOFFInvoke"
+      EventPattern: 
+        source: 
+          - "aws.ec2"
+        detail-type: 
+          - "EC2 Instance State-change Notification"
+        detail: 
+          state: 
+            - "starting"
+          instance-id:  
+          - i-081fc9a044eaa945d ## Instance id of the primary instance ##
+  
+      Targets: 
+        - Arn: !Ref EC2TurnOFFTopic
+          Id: "EC2OFF"

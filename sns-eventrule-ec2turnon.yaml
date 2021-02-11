@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+
+  EC2TurnONTopic:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      DisplayName: !Sub 'EC2TurnONTopic'
+      
+  LambdaONSubscription:
+    Type: 'AWS::SNS::Subscription'
+    Properties:
+      TopicArn: !Ref EC2TurnONTopic
+      Protocol: lambda
+      Region: us-east-1
+      Endpoint: arn:aws:lambda:us-west-1:809184911390:function:Ec2TurnON2 ## ARN of the EC2 TurnOn Lambda function ##
+      
+      
+  EventRule: 
+    Type: 'AWS::Events::Rule'
+    Properties: 
+      Description: "EventRuleforLambdaTurnONInvoke"
+      EventPattern: 
+        source: 
+          - "aws.ec2"
+        detail-type: 
+          - "EC2 Instance State-change Notification"
+        detail: 
+          state: 
+            - "stopping"
+            - "shutting-down"
+            - "terminated"
+          instance-id:  
+          - i-081fc9a044eaa945d ## Instance id of the primary instance ##
+  
+      Targets: 
+        - Arn: !Ref EC2TurnONTopic
+          Id: "EC2ON"

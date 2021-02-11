@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+'Parameters':
+  'IAMRoleforLambda':
+    'Type': 'String'
+    'Description': 'Enter the IAM Role ARN created for Lambda'
+
+'Resources':
+  
+  'Ec2TurnONFunction':
+    'Type': 'AWS::Lambda::Function'
+    'Properties':
+      'FunctionName': 'Ec2TurnON2'
+      'Description': 'This function turns on the DR EC2 instance'
+      'Handler': 'index.lambda_handler'
+      'MemorySize': !!int '2048'
+      'Role': 
+        'Ref': 'IAMRoleforLambda'
+      'Runtime': 'python3.7'
+      'Timeout': !!int '10'
+      'Code':
+        'ZipFile': |
+           import boto3
+           region = 'us-west-1'
+           instances = ['i-07f6fc2190aaf9085'] ## instance id of the DR EC2 ##
+           ec2 = boto3.client('ec2', region_name=region)
+          
+           def lambda_handler(event, context):
+               ec2.start_instances(InstanceIds=instances)
+               print('started your instances: ' + str(instances))
