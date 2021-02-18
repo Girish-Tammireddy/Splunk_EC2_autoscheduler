@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CSAA Splunk SIEM EC2 Instance
+
+Parameters:
+  Ec2Subnet:
+    Type: AWS::EC2::Subnet::Id
+  
+  SplunkAMI:
+    Type: String
+    Default: "ami-0f922c4ed9b45f542"
+  
+  SplunkInstanceType:
+    Type: String
+    AllowedValues: ["t3a.medium","t3a.large","c5.2xlarge"]
+  
+  SplunkKeyPair:
+    Type: AWS::EC2::KeyPair::KeyName
+
+
+Mappings: 
+  TagMap:
+    CostCenter:
+      Value: "2815-533"
+    OwnerCostCenter: 
+      Value: "2244-533"
+    OwnerContact:
+      Value: "DLITSecurityIncidentResponse@csaa.com"
+    DataCategory: 
+      Value: "confidential"
+    Environment: 
+      Value: "production"
+    SupportGroup: 
+      Value: "Cyber Defense Services"
+    TQS5:
+      Value: "false"
+    PCI: 
+      Value: "false"
+
+  NameMap:
+    SplunkASGname:
+      Value: "Splunk-EC2"
+
+Resources:
+
+  SplunkSIEMEC2Config:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref SplunkAMI
+      SubnetId: !Ref Ec2Subnet
+      InstanceType: !Ref SplunkInstanceType
+      KeyName: !Ref SplunkKeyPair
+      IamInstanceProfile: 
+        Fn::ImportValue: SplunkSIEMProfileArn
+      SecurityGroups:
+        - Fn::ImportValue: SplunkSIEMSecurityGroupId
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 100
+            VolumeType: gp2
+            Encrypted: True
+
+      Tags:
+        - Key: Name
+          Value: !FindInMap [NameMap, SplunkASGname, Value]
+          PropagateAtLaunch: true
+        - Key: CostCenter
+          Value: !FindInMap [ TagMap, CostCenter, Value ]
+          PropagateAtLaunch: true
+        - Key: OwnerCostCenter
+          Value: !FindInMap [ TagMap, OwnerCostCenter, Value ]
+          PropagateAtLaunch: true
+        - Key: DataCategory
+          Value: !FindInMap [ TagMap, DataCategory, Value ]
+          PropagateAtLaunch: true
+        - Key: Environment
+          Value: !FindInMap [ TagMap, Environment, Value ]
+          PropagateAtLaunch: true
+        - Key: SupportGroup
+          Value: !FindInMap [ TagMap, SupportGroup, Value ]
+          PropagateAtLaunch: true
+        - Key: TQS5
+          Value: !FindInMap [ TagMap, TQS5, Value ]
+          PropagateAtLaunch: true
+        - Key: PCI
+          Value: !FindInMap [ TagMap, PCI, Value ]
+          PropagateAtLaunch: true
