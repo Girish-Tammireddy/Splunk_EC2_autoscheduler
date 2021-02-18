@@ -27,7 +27,7 @@ To Deploy the solution , get started by deploying the IAM_Role_lambda.yaml CFN t
 
 Next insert the instance id of the secondary ec2 in the Lambda function in the place holder field  " instances = ['i-081fc9a044eaa945d'] " and deploy the Lambda-ec2-TurnOFF.yaml and theLambda-ec2-TurnON.yaml templates pass the ARN of the IAM role created in the previous step as input parameters
 
-In the third step deploy the sns-eventrule-ec2turnoff.yaml sns-eventrule-ec2turnofN.yaml CFN template.
+In the third step replace the lambda function ARN deployed in the previous step in place of the subscription endpoint mentioned in the  sns-eventrule-ec2turnoff.yaml sns-eventrule-ec2turnofN.yaml CFN templates after the necessary changes are made make sure you launch the stack in the primary region.
 
 ![](Splun_DR.png)
 
